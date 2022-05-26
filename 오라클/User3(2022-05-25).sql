@@ -164,11 +164,14 @@ SELECT * FROM tbl_belong;
 1	20220001	D0001
 2	20220002	D0002
 3	20220003	D0003
+26	20220004	D0003
 */
 
 SELECT * FROM tbl_dept;
 
--- 
+-- tbl_student 에 아직 추가되지 않은 학번을 belong table 에 추가하기
+-- tbl_student 에 없는 20220004 학번을 추가하려고 했더니
+-- parent key not found 오류가 발생한다
 INSERT INTO tbl_belong(b_seq, b_stnum, b_dcode)
 VALUES(seq_belong.NEXTVAL, '20220004','D0003');
 
@@ -177,11 +180,23 @@ VALUES(seq_belong.NEXTVAL, '20220004','D0003');
 INSERT INTO tbl_student(st_num,st_name, st_grade)
 VALUES('20220004','한철수', 2);
 
--- FK를 설정 할 때 parent table의 데이터를 삭제하려고 할 때  child TABLE에 데이터가 있으면 보통 삭제 금지
--- 
-DELETE FROM tbl_student WHERE st_num= '20220004'
+-- tbl_belong 에 등록된 학번의 정보를  tbl_student 에서 삭제하려고 한다.
+-- 이미 tbl_belong 에 등록된 학번이므로 학번의 정보를 삭제할수 없다
+-- child key found
+-- FK 를 설정할때
+-- parent table 의 데이터를 삭제하려고 할때 child table 에 데이터 있으면
+-- 보통 삭제 금지, 
+-- parent table 데이터를 변경(Update) 하려고 할때 child table 에 데이터 있으면
+-- 보통 변경 금지
 
+-- FK의 옵션을 지정하여 parent 의 정보가 삭제되면, child 데이터를 모두 삭제하거나
+-- parent 의 데이터가 변경되면 child 데이터를 변경하도록 설정할수 있다
+DELETE FROM tbl_student WHERE st_num= '20220004';
+
+-- 만약 parent table 의 데이터를 일괄 변경하거나, table 의 구조를 변경하려고 하면
+-- FK 를 먼저 제거하고 실행을 해야 한다.
 ALTER TABLE tbl_belong
+DROP CONSTRAINT FK_tbl_student CASCADE;
 
 
 
