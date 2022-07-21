@@ -11,6 +11,8 @@ login(접속)을 하면 자동으로 기본 DB가 연결된다
 -- DB 저장소 생성
 CREATE DATABASE myDB;
 
+create database schoolDB;
+
 -- 일반 사용자 생성
 /* 
 MySQL은 전통적으로 root 사용자로 접속하여 DB를 관리한다
@@ -31,8 +33,15 @@ MySQL을 실무에서 가장 많이 사용하는 버전은 5.7.x 이다
 -- 새로 등록한 사용자에게 DB에 접근 할 수 있는 권한 부여하기
 GRANT ALL privileges ON mydb.* TO 'jinwoo8420'@'localhost';
 
+GRANT ALL privileges ON schooldb.* TO 'jinwoo8420'@'localhost';
+
+-- 권한 부여 후 적용
+flush privileges;
+
 -- user1은 모든 DB Schema에 접근 권한 부여
 GRANT ALL privileges ON *.* TO 'user1'@'127.0.0.1';
+
+GRANT ALL privileges ON *.* TO 'jinwoo8420'@'localhost';
 
 CREATE USER 'user1'@'127.0.0.1' identified BY '!Korea8080';
 
